@@ -1,0 +1,17 @@
+<div>
+<h3>GuardianWitness</h3>
+
+<ul>
+    {{#results}}
+    <li>
+        <a target="_blank" href="{{webUrl}}">
+        <div>
+            <img width="120" height="72" class="responsive-img" src="{{image}}" />
+        </div>
+        <h3>{{headline}}</h3>
+        <a target="_blank" href="{{user.profileUrl}}">{{user.username}}</a>
+        </a>
+        {{params}}
+    </li>
+    {{/results}}
+</ul>
