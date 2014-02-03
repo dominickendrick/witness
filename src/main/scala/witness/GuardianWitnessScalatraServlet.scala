@@ -11,6 +11,7 @@ class GuardianWitnessScalatraServlet extends GuardianwitnessWidgetStack {
     get("/") {
 
         val serviceUrl = "http://n0ticeapis.com/2/search"        
+//        val serviceUrl = "http://localhost:8000/witness.json"
         val validWitnessParams = List("group", "location", "q")
         val contentType = "text/html"
                 
@@ -18,11 +19,11 @@ class GuardianWitnessScalatraServlet extends GuardianwitnessWidgetStack {
             val list = for {   
                 param <- q
                 val value = params(param.toString)
-                if value != None
             } yield {
                     (value.toString, value)
             }
             list.toMap
+
         }
         
         def getWitnessData = {
