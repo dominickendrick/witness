@@ -30,7 +30,8 @@ object GuardianwitnessWidgetBuild extends Build {
         "org.eclipse.jetty" % "jetty-webapp" % "8.1.8.v20121106" % "container",
         "org.eclipse.jetty.orbit" % "javax.servlet" % "3.0.0.v201112011016" % "container;compile;provided;test" artifacts (Artifact("javax.servlet", "jar", "jar")),
         "net.databinder.dispatch" %% "dispatch-core" % "0.11.0",
-        "com.typesafe.play" %% "play-json" % "2.2.1"
+        "net.databinder.dispatch" %% "dispatch-lift-json" % "0.11.0",
+        "net.liftweb" %% "lift-json" % "2.5"
       ),
       scalateTemplateConfig in Compile <<= (sourceDirectory in Compile){ base =>
         Seq(
