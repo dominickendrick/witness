@@ -4,7 +4,7 @@ import org.scalatra.scalate
 import scalate.ScalateSupport
 import dispatch._ 
 import Defaults._
-import play.api.libs.json._
+import net.liftweb.json._
 
 class GuardianWitnessScalatraServlet extends GuardianwitnessWidgetStack {
 
@@ -13,35 +13,26 @@ class GuardianWitnessScalatraServlet extends GuardianwitnessWidgetStack {
         val serviceUrl = "http://n0ticeapis.com/2/search"        
 //        val serviceUrl = "http://localhost:8000/witness.json"
         val validWitnessParams = List("group", "location", "q")
-        val contentType = "text/html"
+        contentType = "text/html"
                 
         def getWitnessParams(q: List[String]): Map[String, String] = {
-            val list = for {   
-                param <- q
-                val value = params(param.toString)
-            } yield {
-                    (value.toString, value)
-            }
-            list.toMap
-
+            q.flatMap { key =>
+                params.get(key).map { v => (key, v) }
+            }.toMap
         }
-        
+
         def getWitnessData = {
             dispatch.Http(
-                dispatch.url(serviceUrl) <<? getWitnessParams(validWitnessParams) OK as.String
+                dispatch.url(serviceUrl) <<? getWitnessParams(validWitnessParams) OK as.lift.Json
             )
         }
-    
-        val json = Json.parse(getWitnessData())
-        
-        val data = (json \ "results").as[List[JsObject]].map { 
-            witnessValues => {
-                val data = WitnessData.apply( witnessValues )
-            }
-        }
-        
-        mustache("witness", ("results", data) )
 
+        val json = getWitnessData()
+        
+        val data = for (child <- (json \ "results").children) {
+           WitnessData(child.asInstanceOf[JObject]) 
+        }
+        mustache("witness", ("results", data) )
     }    
     
     case class WitnessData(
@@ -52,13 +43,15 @@ class GuardianWitnessScalatraServlet extends GuardianwitnessWidgetStack {
     )
     
     object WitnessData{
-        def apply(json:JsObject) = { 
-            val webUrl = (json \ "webUrl").as[String]
-            val image = (json \ "updates" \ "0" \ "image" \ "extralarge").asInstanceOf[String]
+        def apply(json:JObject) = { 
+            implicit val formats = net.liftweb.json.DefaultFormats
+
+            val webUrl = (json \ "webUrl").extract[String]
+            val image = (json \ "updates" \ "0" \ "image" \ "extralarge")
             val headline = (json \ "updates")
             val user = List(
-                Map("profileUrl" -> (json \ "user" \ "0" \ "image" \ "extralarge").asInstanceOf[String]),
-                Map("username" -> (json \ "user" \ "0" \ "image" \ "extralarge").asInstanceOf[String])
+                Map("profileUrl" -> (json \ "user" \ "0" \ "image" \ "extralarge")),
+                Map("username" -> (json \ "user" \ "0" \ "image" \ "extralarge"))
             )
             List(webUrl, image, headline, user)
         }
