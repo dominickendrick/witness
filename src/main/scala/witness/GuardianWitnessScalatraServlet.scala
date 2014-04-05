@@ -9,19 +9,19 @@ import net.liftweb.json._
 class GuardianWitnessScalatraServlet extends GuardianwitnessWidgetStack {
 
     get("/") {
-
+        
+        val listLength = 5
         val serviceUrl = "http://n0ticeapis.com/2/search"        
-//        val serviceUrl = "http://localhost:8000/witness.json"
         val validWitnessParams = List("group", "location", "q")
         contentType = "text/html"
                 
         def getWitnessParams(q: List[String]): Map[String, String] = {
             q.flatMap { key =>
                 params.get(key).map { v => (key, v) }
-            }.toMap
+            }.toMap ++ Map("hasImages" -> "true")
         }
 
-        def getWitnessData = {
+        def getWitnessData = {            
             dispatch.Http(
                 dispatch.url(serviceUrl) <<? getWitnessParams(validWitnessParams) OK as.lift.Json
             )
@@ -29,10 +29,13 @@ class GuardianWitnessScalatraServlet extends GuardianwitnessWidgetStack {
 
         val json = getWitnessData()
         
-        val data = for (child <- (json \ "results").children) {
-           WitnessData(child.asInstanceOf[JObject]) 
-        }
-        mustache("witness", ("results", data) )
+        val data = for {
+                child <- (json \ "results").children
+            } yield {
+                WitnessData(child.asInstanceOf[JObject])
+            }
+            
+        mustache("witness", ("results", data.take(listLength)) )
     }    
     
     case class WitnessData(
@@ -47,13 +50,11 @@ class GuardianWitnessScalatraServlet extends GuardianwitnessWidgetStack {
             implicit val formats = net.liftweb.json.DefaultFormats
 
             val webUrl = (json \ "webUrl").extract[String]
-            val image = (json \ "updates" \ "0" \ "image" \ "extralarge")
-            val headline = (json \ "updates")
-            val user = List(
-                Map("profileUrl" -> (json \ "user" \ "0" \ "image" \ "extralarge")),
-                Map("username" -> (json \ "user" \ "0" \ "image" \ "extralarge"))
-            )
-            List(webUrl, image, headline, user)
+            val image = (json \ "updates" \ "image" \ "large").extractOrElse[String]("no image")
+            val headline = (json \ "headline").extract[String]
+            val userProfileUrl = (json \ "updates" \ "user" \"profileUrl" ).extractOrElse[String]("no profile Url")
+            val username = (json \ "user" \ "username").extractOrElse[String]("no username")
+            Map("webUrl" -> webUrl, "image" -> image, "headline" -> headline , "userProfileUrl" -> userProfileUrl, "username" -> username)
         }
     }   
 }
