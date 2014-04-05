@@ -5,13 +5,13 @@
 
     <title> GuardianWitness </title>
 	<meta charset="utf-8" />    
-    <script data-main="javascript/main.js" src="javascript/lib/require/require.js"></script>
-    <link href="stylesheets/styles.css" media="all" rel="stylesheet" type="text/css">
+    <link href="stylesheets/base.css" media="all" rel="stylesheet" type="text/css">
 
 </head>
 <body>
-    <h1>One Down</h1>
+<section class="Witness__body Witness__body--r2">
     <%= unescape(body) %>
-    <div id="data" style="width:100%;height:100%; text-align:center"><div style="margin-top:200px"><img src="images/ajax-loader.gif" /></div></div>
+</section>
+
 </body>
 </html>

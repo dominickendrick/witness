@@ -1,17 +1,15 @@
-<div>
-<h3>GuardianWitness</h3>
-
-<ul>
+<h1 class="Witness__header1 Witness__header1--r2">GuardianWitness</h3>
+<ul class="Witness__list Witness__list--r2">
     {{#results}}
-    <li>
+    <li class="Witness__list-item Witness__list-item--r2">
         <a target="_blank" href="{{webUrl}}">
-        <div>
-            <img width="120" height="72" class="responsive-img" src="{{image}}" />
-        </div>
-        <h3>{{headline}}</h3>
-        <a target="_blank" href="{{user.profileUrl}}">{{user.username}}</a>
+            <img width="120" height="72" class="Witness__list-item__img Witness__list-item__img--r2" src="{{image}}" />
         </a>
-        {{params}}
+        <a class="Witness__header2-link Witness__header2-link--r2" target="_blank" href="{{webUrl}}">
+            <h2 class="Witness__header2 Witness__header2--r2">{{headline}}</h3>
+        </a>
+        <a class="Witness__profile-link Witness__profile-link--r2"target="_blank" href="{{userProfileUrl}}">{{username}}</a>
+
     </li>
     {{/results}}
 </ul>

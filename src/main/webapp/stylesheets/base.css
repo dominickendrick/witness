@@ -1,0 +1,71 @@
+body{
+    padding:0;
+    margin:0;
+    background-color:#F3F3F3;
+}
+
+.Witness__body{
+    padding:10px;
+}
+
+.Witness__header1 {
+    text-indent:-999px;
+}
+
+.Witness__list {
+    list-style:none;
+    padding:0;
+}
+
+.Witness__list-item__img {
+    float:left;
+    margin:0 10px 10px 0;
+}
+
+.Witness__list-item{
+    clear:both;
+}
+
+/** R2 Witness styles **/ 
+
+.Witness__body--r2{
+    border-top:10px #D3D3D3 solid;
+    font-family: arial,sans-serif;
+    font-size:1rem;
+    color:#333;
+}
+
+.Witness__header1--r2 {
+    background:url("/images/Guardian_Witness_powered_by_EE_200x60.png") no-repeat top left;
+    margin:5px 0 20px 0;
+}
+
+.Witness__list-item--r2 {
+    border-top:1px #666 dotted;
+    padding:10px 0 5px 0;
+}
+
+.Witness__header2-link--r2 {
+    text-decoration:none;
+}
+
+.Witness__header2-link--r2:hover,
+.Witness__header2-link--r2:focus  {
+    text-decoration:underline;
+}
+
+.Witness__header2--r2 {
+    color:#0061a6;
+    font-size:0.8em;
+    margin:0;
+}
+
+.Witness__profile-link--r2 {
+    font-size:0.7em;
+    text-decoration:none;
+    color:#333;
+}
+
+.Witness__profile-link--r2:hover {
+    text-decoration:underline;
+}
